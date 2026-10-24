@@ -1,0 +1,19 @@
+# Applied automatically by scripts/start-app.sh on arm64 hosts (Apple Silicon).
+# The published API and UI images are x86-only and crash under emulation, so build native ones.
+services:
+  laravel-api:
+    image: toolshop-api-native
+    build:
+      context: .
+      dockerfile: docker/api-native.Dockerfile
+      args:
+        SPRINT: ${SPRINT:-sprint5}
+
+  angular-ui:
+    image: toolshop-ui-native
+    build:
+      context: .
+      dockerfile: docker/ui-native.Dockerfile
+      args:
+        SPRINT: ${SPRINT:-sprint5}
+    command: npx ng serve --host 0.0.0.0 --port 4200

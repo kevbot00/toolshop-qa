@@ -1,0 +1,46 @@
+# Runs the Practice Software Testing "Toolshop" app (https://github.com/testsmith-io/practice-software-testing)
+# from its published images, so the suite always tests a known, pinned version of the app.
+name: toolshop
+
+services:
+  laravel-api:
+    image: testsmith/practice-software-testing-${SPRINT:-sprint5}-api
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=mariadb
+      - host=localhost
+      - DISABLE_LOGGING=true
+    volumes:
+      - api-code:/var/www
+    depends_on:
+      - mariadb
+
+  # nginx in front of the API; it serves the PHP code from the volume the API container populates.
+  web:
+    image: toolshop-web
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    ports:
+      - "8091:80"
+    volumes:
+      - api-code:/var/www
+    depends_on:
+      - laravel-api
+
+  angular-ui:
+    image: testsmith/practice-software-testing-${SPRINT:-sprint5}-ui
+    ports:
+      - "4200:4200"
+    command: bash -c "ng serve --host 0.0.0.0 --port 4200"
+
+  mariadb:
+    image: yobasystems/alpine-mariadb:10.6.11
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: toolshop
+
+volumes:
+  api-code:

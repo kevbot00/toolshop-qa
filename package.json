@@ -1,0 +1,23 @@
+{
+  "name": "toolshop-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UI and API test automation for the Practice Software Testing Toolshop app",
+  "scripts": {
+    "app:start": "./scripts/start-app.sh",
+    "app:stop": "docker compose down -v",
+    "test": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --project=chromium --project=firefox",
+    "test:smoke": "playwright test --grep @smoke",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^24.12.3",
+    "typescript": "~6.0.3",
+    "zod": "^4.6.7"
+  }
+}
