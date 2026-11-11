@@ -5,9 +5,8 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
-  # Nightly run catches breakage that no commit here caused, such as a new upstream app image.
-  schedule:
-    - cron: '0 7 * * *'
+  # The nightly schedule was removed on 2026-11-10 to save GitHub Actions minutes (account-wide
+  # 2,000/month cap). Run it by hand from the Actions tab when you need it.
 
 concurrency:
   group: tests-${{ github.ref }}
